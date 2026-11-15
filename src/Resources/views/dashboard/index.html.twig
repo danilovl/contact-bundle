@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="cb-body">
+{% block body %}
+    <div id="contact-app"
+         data-contact-app
+         data-api-prefix="{{ apiPrefix }}"
+         data-title="{{ title }}"
+         data-locale="{{ app.request.locale|default('en') }}">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ danilovl_contact_assets() }}
+{% endblock %}
+</body>
+</html>

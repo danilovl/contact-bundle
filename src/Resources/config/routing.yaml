@@ -1,0 +1,9 @@
+danilovl_contact_dashboard:
+  resource: '../../Controller/DashboardController.php'
+  type: attribute
+
+danilovl_contact_api:
+  resource:
+    path: ../../Controller/Api/
+    namespace: Danilovl\ContactBundle\Controller\Api
+  type: attribute

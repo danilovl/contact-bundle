@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  "Danilovl\\ContactBundle\\":
+    resource: '../../*'
+    exclude:
+      - '../../DependencyInjection'
+      - '../../Dto'
+      - '../../Entity'
+      - '../../Model'
+      - '../../Exception'
+      - '../../Resources'
+      - '../../ContactBundle.php'
+
+  Danilovl\ContactBundle\Service\OwnerResolver:
+    arguments:
+      $security: '@?security.helper'
