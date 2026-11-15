@@ -2,10 +2,10 @@
   "entrypoints": {
     "contact": {
       "css": [
-        "/bundles/contact/build/contact.8b47a05a.css"
+        "/bundles/contact/build/contact.d7350445.css"
       ],
       "js": [
-        "/bundles/contact/build/contact.0deb74a9.js"
+        "/bundles/contact/build/contact.64592620.js"
       ]
     }
   }
