@@ -1,7 +1,14 @@
 <?php
 
+$directories = array_filter(
+    [__DIR__ . '/src', __DIR__ . '/tests'],
+    static function (string $directory): bool {
+        return is_dir($directory);
+    }
+);
+
 $finder = (new PhpCsFixer\Finder())
-    ->in([__DIR__. '/src', __DIR__ . '/tests'])
+    ->in($directories)
     ->exclude('var');
 
 return (new PhpCsFixer\Config())
