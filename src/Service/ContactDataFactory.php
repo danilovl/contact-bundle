@@ -3,6 +3,7 @@
 namespace Danilovl\ContactBundle\Service;
 
 use DateTimeImmutable;
+use Danilovl\ContactBundle\DependencyInjection\ContactConfig;
 use Danilovl\ContactBundle\Dto\{
     ContactAddressData,
     ContactCustomFieldData,
@@ -33,8 +34,6 @@ class ContactDataFactory
     private const int LABEL_LENGTH = 64;
 
     private const int NOTES_LENGTH = 65_000;
-
-    private const int PHOTO_LENGTH = 2_000_000;
 
     private const int TAG_LENGTH = 64;
 
@@ -73,7 +72,10 @@ class ContactDataFactory
 
     private bool $strict = true;
 
-    public function __construct(private readonly ValidatorInterface $validator) {}
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly ContactConfig $config
+    ) {}
 
     /**
      * @param array<mixed> $payload
@@ -557,11 +559,19 @@ class ContactDataFactory
             return null;
         }
 
-        $length = mb_strlen($photo);
         $dataUri = DataUri::parse($photo);
-
-        if ($dataUri === null || $length > self::PHOTO_LENGTH) {
+        if ($dataUri === null) {
             $this->addError('photo', 'Invalid photo.');
+
+            return null;
+        }
+
+        $base64Length = mb_strlen($dataUri->base64);
+        $binarySize = intdiv($base64Length * 3, 4);
+        if ($binarySize > $this->config->photoMaxSize) {
+            $limitMb = round($this->config->photoMaxSize / 1_048_576, 2);
+            $message = sprintf('Photo is too large. Maximum size is %s MB.', $limitMb);
+            $this->addError('photo', $message);
 
             return null;
         }

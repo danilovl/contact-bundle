@@ -49,6 +49,9 @@ class ContactExtension extends Extension implements PrependExtensionInterface
         $container->setParameter('danilovl_contact.api.prefix', $apiPrefix);
         $container->setParameter('danilovl_contact.dashboard.path', $dashboardPath);
 
+        $photoMaxSizeMb = (float) $config['photo']['max_size_mb'];
+        $photoMaxSize = (int) round($photoMaxSizeMb * 1_048_576);
+
         $configDefinition = new Definition(ContactConfig::class, [
             $apiPrefix,
             $dashboardPath,
@@ -59,7 +62,8 @@ class ContactExtension extends Extension implements PrependExtensionInterface
             $config['access']['admin']['enabled'],
             $config['access']['admin']['role'],
             $config['owner_property'],
-            $config['phone']['default_country_code']
+            $config['phone']['default_country_code'],
+            $photoMaxSize
         ]);
         $configDefinition->setPublic(false);
         $container->setDefinition(ContactConfig::class, $configDefinition);

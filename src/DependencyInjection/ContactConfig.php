@@ -18,6 +18,7 @@ final readonly class ContactConfig
         public bool $adminEnabled = false,
         public string $adminRole = 'ROLE_ADMIN',
         public ?string $ownerProperty = null,
-        public ?string $phoneDefaultCountryCode = null
+        public ?string $phoneDefaultCountryCode = null,
+        public int $photoMaxSize = 1_048_576
     ) {}
 }

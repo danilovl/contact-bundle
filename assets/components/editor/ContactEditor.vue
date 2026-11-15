@@ -16,7 +16,7 @@
         <section class="cb-card cb-card--wide">
           <h2 class="cb-card__title"><AppIcon name="user" :size="16" />{{ t('section.name') }}</h2>
           <div class="cb-name-editor">
-            <PhotoInput v-model="form.photo" :name="previewName" />
+            <PhotoInput v-model="form.photo" :name="previewName" :max-bytes="photoMaxSize" />
             <div class="cb-form-grid">
               <label v-if="showMoreNames" class="cb-field">
                 <span class="cb-field__label">{{ t('field.prefix') }}</span>
@@ -190,6 +190,7 @@ const props = defineProps<{
   errors: FieldErrors
   tagSuggestions: string[]
   relationOptions: RelationOption[]
+  photoMaxSize: number
 }>()
 
 const emit = defineEmits<{

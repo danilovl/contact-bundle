@@ -31,7 +31,8 @@ readonly class ConfigApiController
             'apiPrefix' => $this->config->apiPrefix,
             'dashboardPath' => $this->config->dashboardPath,
             'title' => $this->config->dashboardTitle,
-            'importMaxFileSize' => $this->config->importMaxFileSize
+            'importMaxFileSize' => $this->config->importMaxFileSize,
+            'photoMaxSize' => $this->config->photoMaxSize
         ]);
     }
 }

@@ -31,7 +31,19 @@
 
     <div class="cb-detail__scroll">
       <header class="cb-hero">
-        <ContactAvatar :name="contact.displayName" :photo-src="photoSrc" size="xl" />
+        <button
+          v-if="photoSrc"
+          type="button"
+          class="cb-hero__photo"
+          :title="t('detail.photoOpen')"
+          @click="isPhotoOpen = true"
+        >
+          <ContactAvatar :name="contact.displayName" :photo-src="photoSrc" size="xl" />
+          <span class="cb-hero__photo-overlay">
+            <AppIcon name="search" :size="26" />
+          </span>
+        </button>
+        <ContactAvatar v-else :name="contact.displayName" :photo-src="photoSrc" size="xl" />
         <div class="cb-hero__text">
           <h1 class="cb-hero__name">{{ contact.displayName }}</h1>
           <p v-if="contact.nickname" class="cb-hero__nickname">“{{ contact.nickname }}”</p>
@@ -240,6 +252,12 @@
         <span v-if="showOwner"> · {{ t('detail.owner') }}: {{ contact.owner }}</span>
       </footer>
     </div>
+    <PhotoViewer
+      v-if="isPhotoOpen && photoSrc"
+      :src="photoSrc"
+      :name="contact.displayName"
+      @close="isPhotoOpen = false"
+    />
   </article>
 </template>
 
@@ -247,6 +265,7 @@
 import { computed, ref, watch } from 'vue'
 import AppIcon from '../ui/AppIcon.vue'
 import ContactAvatar from '../ui/ContactAvatar.vue'
+import PhotoViewer from './PhotoViewer.vue'
 import { locale, t, translateLabel } from '../../i18n'
 import {
   formatAddress,
@@ -280,6 +299,7 @@ const emit = defineEmits<{
 }>()
 
 const { show } = useToast()
+const isPhotoOpen = ref(false)
 
 const findPrimary = (values: ContactValue[]): string | null => {
   const primary = values.find((value) => {
@@ -365,6 +385,7 @@ watch(
   },
   () => {
     isWorkOpen.value = workHistory.value.length <= WORK_COLLAPSE_THRESHOLD
+    isPhotoOpen.value = false
   },
   { immediate: true },
 )

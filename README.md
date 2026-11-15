@@ -35,6 +35,7 @@ vCard import/export and a Vue 3 single page application.
 - CLI commands to import and export `.vcf` files, upgrade old data, merge duplicates and move contacts between owners
 - Seven list sort orders (first name, last name, company, job title, upcoming birthday, date added, date modified) in both directions
 - Floating Cancel / Save bar in the editor, the form stays open after saving
+- Photo upload with a crop dialog (drag to position, wheel or slider to zoom, round preview); the result is stored as a 512 px JPEG and compressed automatically to fit `photo.max_size_mb`
 
 ## Screenshots
 
@@ -121,6 +122,8 @@ danilovl_contact:
         title: 'Contacts'
     import:
         max_file_size: 20971520     # bytes
+    photo:
+        max_size_mb: 1.0            # maximum size of a stored photo in MB (min 0.05)
     default_owner: 'default'        # owner identifier when security-bundle is not installed
     owner_property: null            # e.g. 'id': use $user->getId() instead of getUserIdentifier() as the owner
     phone:
@@ -141,13 +144,19 @@ contacts of a deleted user with `danilovl:contact:purge-owner`. The bundle does 
 The administrator mode requires `symfony/security-bundle`. Contacts created by an administrator stay
 owned by that administrator; the owner is shown in the contact card for administrators and in shared mode.
 
+The photo limit is checked on the server for the stored photo (the API answers `422` with a `photo` error when it is exceeded)
+and sent to the UI in `/config` as `photoMaxSize` (bytes). The editor crops the picture to a square, scales it down to
+512 px and lowers the JPEG quality (and, if needed, the size) until it fits, so any original file can be selected.
+A cropped 512 px photo is usually 40-120 KB, so the default of 1 MB leaves room for photos imported from vCard
+files and keeps the `danilovl_contact_photo` table small. Raise it only if you import large photos.
+
 ## REST API
 
 All endpoints are prefixed with `api.prefix`.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/config` | UI configuration (`owner`, `isAdmin`, `accessMode`, …) |
+| GET | `/config` | UI configuration (`owner`, `isAdmin`, `accessMode`, `photoMaxSize`, …) |
 | GET | `/contacts` | Contact list (summary), optional `?tag=Family` filter |
 | GET | `/contacts/duplicates` | Groups of contacts sharing a normalized phone or email |
 | POST | `/contacts/merge` | `{"primaryId": 1, "ids": [2, 3]}` merges contacts into the primary one |

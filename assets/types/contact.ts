@@ -40,6 +40,7 @@ export interface AppConfig {
   owner: string
   isAdmin: boolean
   accessMode: string
+  photoMaxSize: number
 }
 
 export interface RelationOption {

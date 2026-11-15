@@ -4,7 +4,9 @@
       <div class="cb-modal__box">
         <p class="cb-modal__message">{{ state?.message }}</p>
         <div class="cb-modal__actions">
-          <button type="button" class="cb-button" @click="answer(false)">{{ t('confirm.cancel') }}</button>
+          <button type="button" class="cb-button" @click="answer(false)">
+            {{ state?.cancelText ?? t('confirm.cancel') }}
+          </button>
           <button type="button" class="cb-button cb-button--danger" @click="answer(true)">
             {{ state?.confirmText }}
           </button>

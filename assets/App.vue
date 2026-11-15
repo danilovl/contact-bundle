@@ -49,6 +49,7 @@
         :errors="errors"
         :tag-suggestions="tagNames"
         :relation-options="relationOptions"
+        :photo-max-size="photoMaxSize"
         @save="save"
         @cancel="cancelEdit"
         @open-contact="selectContact"
@@ -96,6 +97,7 @@ import ContactEditor from './components/editor/ContactEditor.vue'
 import { ApiError, createContactApi } from './api/contactApi'
 import { isRtl, locale, t } from './i18n'
 import { contactToForm, createEmptyForm, formToPayload } from './helpers/contact'
+import { PHOTO_DEFAULT_MAX_BYTES } from './helpers/photo'
 import { toSummary, useContacts } from './composables/useContacts'
 import { useToast } from './composables/useToast'
 import { useConfirm } from './composables/useConfirm'
@@ -130,6 +132,15 @@ const importing = ref(false)
 const detailLoading = ref(false)
 const menuOpen = ref(false)
 const appConfig = ref<AppConfig | null>(null)
+
+const photoMaxSize = computed(() => {
+  const config = appConfig.value
+  if (config === null || !config.photoMaxSize) {
+    return PHOTO_DEFAULT_MAX_BYTES
+  }
+
+  return config.photoMaxSize
+})
 
 const showOwner = computed(() => {
   const config = appConfig.value

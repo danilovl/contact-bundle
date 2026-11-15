@@ -2,6 +2,7 @@
 
 namespace Danilovl\ContactBundle\Tests\Unit\Service;
 
+use Danilovl\ContactBundle\DependencyInjection\ContactConfig;
 use Danilovl\ContactBundle\Exception\ContactValidationException;
 use Danilovl\ContactBundle\Service\ContactDataFactory;
 use Generator;
@@ -16,7 +17,8 @@ final class ContactDataFactoryTest extends TestCase
     protected function setUp(): void
     {
         $validator = Validation::createValidator();
-        $this->factory = new ContactDataFactory($validator);
+        $config = new ContactConfig('/api', '/contact', 'Contacts', 1_024, 'default');
+        $this->factory = new ContactDataFactory($validator, $config);
     }
 
     /**
